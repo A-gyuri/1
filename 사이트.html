@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 고등학교 3년</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%);
+            font-family: '맑은 고딕', Arial, sans-serif;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* ✨ 떨어지는 별 효과 */
+        .falling-stars {
+            position: fixed;
+            top: -10px;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(135, 206, 235, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        /* 📍 위에서 내려오는 효과 */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            font-size: 48px;
+            color: #4da6ff;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        /* 🎈 튀는 효과 */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* 각 카드별로 다른 시간에 나타나기 */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* 아래에서 위로 올라오는 효과 */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px rgba(77, 166, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .card h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #0077be;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b3d9ff;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: '맑은 고딕', Arial, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #4da6ff;
+            background-color: #f0f8ff;
+            box-shadow: 0 0 15px rgba(77, 166, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .grade-section {
+            background: linear-gradient(135deg, #e0f6ff 0%, #cce7ff 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .grade-section h3 {
+            color: #0077be;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .grade-input {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .grade-input input {
+            width: 48%;
+            padding: 10px;
+            border: 2px solid #b3d9ff;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #4da6ff 0%, #2e7fd1 100%);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(77, 166, 255, 0.4);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(77, 166, 255, 0.6);
+        }
+
+        .save-btn:active {
+            transform: translateY(-1px);
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            color: #4da6ff;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            font-weight: bold;
+        }
+
+        .info-text {
+            color: #999;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🎓 나의 고등학교 3년</h1>
+        <p>✨ 소중한 추억들을 기록하다</p>
+    </header>
+
+    <div class="container">
+
+        <!-- 1학년 섹션 -->
+        <div class="card">
+            <h2>📚 1학년</h2>
+
+            <div class="input-group">
+                <label>💭 1학년 때의 가장 기억나는 순간</label>
+                <textarea id="year1Memory" placeholder="여기에 써보세요..."></textarea>
+            </div>
+
+            <div class="grade-section">
+                <h3>📊 1학년 성적</h3>
+                <div class="grade-input">
+                    <input type="number" id="year1Sem1" placeholder="1학기 (예: 3.8)" step="0.1" min="0" max="4.5">
+                    <input type="number" id="year1Sem2" placeholder="2학기 (예: 3.9)" step="0.1" min="0" max="4.5">
+                </div>
+            </div>
+        </div>
+
+        <!-- 2학년 섹션 -->
+        <div class="card">
+            <h2>🌟 2학년</h2>
+
+            <div class="input-group">
+                <label>💭 2학년 때의 가장 기억나는 순간</label>
+                <textarea id="year2Memory" placeholder="여기에 써보세요..."></textarea>
+            </div>
+
+            <div class="grade-section">
+                <h3>📊 2학년 성적</h3>
+                <div class="grade-input">
+                    <input type="number" id="year2Sem1" placeholder="1학기 (예: 3.7)" step="0.1" min="0" max="4.5">
+                    <input type="number" id="year2Sem2" placeholder="2학기 (예: 3.8)" step="0.1" min="0" max="4.5">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3학년 섹션 -->
+        <div class="card">
+            <h2>✨ 3학년</h2>
+
+            <div class="input-group">
+                <label>💭 3학년 때의 가장 기억나는 순간</label>
+                <textarea id="year3Memory" placeholder="여기에 써보세요..."></textarea>
+            </div>
+
+            <div class="grade-section">
+                <h3>📊 3학년 성적</h3>
+                <div class="grade-input">
+                    <input type="number" id="year3Sem1" placeholder="1학기 (예: 4.0)" step="0.1" min="0" max="4.5">
+                    <input type="number" id="year3Sem2" placeholder="2학기 (예: 4.1)" step="0.1" min="0" max="4.5">
+                </div>
+            </div>
+        </div>
+
+        <!-- 최종 메시지 -->
+        <div class="card">
+            <h2>💌 3년을 마치며...</h2>
+            <div class="input-group">
+                <label>자신에게 하고 싶은 말</label>
+                <textarea id="finalMessage" placeholder="3년간 열심히 한 자신에게 한마디..."></textarea>
+            </div>
+        </div>
+
+        <!-- 저장 버튼 -->
+        <div style="text-align: center; margin: 40px 0;">
+            <button class="save-btn" onclick="saveData()">💾 저장하기</button>
+            <p class="info-text">✨ 저장하면 당신의 추억이 안전하게 보관돼요!</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>💙 소중한 시간들, 영원히 기억할게요.</p>
+    </footer>
+
+    <script>
+        // 🌟 떨어지는 별 효과 만들기
+        function createFallingStar() {
+            const star = document.createElement('div');
+            star.className = 'falling-stars';
+            
+            // 랜덤 위치
+            const randomX = Math.random() * window.innerWidth;
+            star.style.left = randomX + 'px';
+            
+            document.body.appendChild(star);
+
+            // 애니메이션
+            const duration = Math.random() * 3 + 2; // 2~5초
+            star.animate([
+                { transform: 'translateY(0) scaleY(1)', opacity: 1 },
+                { transform: 'translateY(' + window.innerHeight + 'px) scaleY(0)', opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            });
+
+            // 애니메이션 끝나면 별 제거
+            setTimeout(() => star.remove(), duration * 1000);
+        }
+
+        // 계속 별 생성하기
+        setInterval(createFallingStar, 300);
+
+        // 페이지가 로드될 때 저장된 데이터를 불러와요
+        window.addEventListener('load', function() {
+            loadData();
+        });
+
+        // 저장 함수
+        function saveData() {
+            const data = {
+                year1Memory: document.getElementById('year1Memory').value,
+                year1Sem1: document.getElementById('year1Sem1').value,
+                year1Sem2: document.getElementById('year1Sem2').value,
+
+                year2Memory: document.getElementById('year2Memory').value,
+                year2Sem1: document.getElementById('year2Sem1').value,
+                year2Sem2: document.getElementById('year2Sem2').value,
+
+                year3Memory: document.getElementById('year3Memory').value,
+                year3Sem1: document.getElementById('year3Sem1').value,
+                year3Sem2: document.getElementById('year3Sem2').value,
+
+                finalMessage: document.getElementById('finalMessage').value
+            };
+
+            localStorage.setItem('myHighSchoolData', JSON.stringify(data));
+            
+            // 저장 완료 알림
+            alert('✨ 완벽해요! 당신의 추억이 저장되었어요! 💙');
+        }
+
+        // 불러오기 함수
+        function loadData() {
+            const savedData = localStorage.getItem('myHighSchoolData');
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+
+                document.getElementById('year1Memory').value = data.year1Memory || '';
+                document.getElementById('year1Sem1').value = data.year1Sem1 || '';
+                document.getElementById('year1Sem2').value = data.year1Sem2 || '';
+
+                document.getElementById('year2Memory').value = data.year2Memory || '';
+                document.getElementById('year2Sem1').value = data.year2Sem1 || '';
+                document.getElementById('year2Sem2').value = data.year2Sem2 || '';
+
+                document.getElementById('year3Memory').value = data.year3Memory || '';
+                document.getElementById('year3Sem1').value = data.year3Sem1 || '';
+                document.getElementById('year3Sem2').value = data.year3Sem2 || '';
+
+                document.getElementById('finalMessage').value = data.finalMessage || '';
+            }
+        }
+    </script>
+
+</body>
+</html>
